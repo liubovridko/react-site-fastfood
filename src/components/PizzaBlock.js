@@ -1,4 +1,10 @@
+import React from "react";
+
 export default function PizzaBlock({ title, img, price }) {
+	const [pizzaCount, setPizzaCount] = React.useState(0);
+	const onAddPizza = () => {
+		setPizzaCount(pizzaCount + 1);
+	};
 	return (
 		<div className="pizza-block">
 			<div className="pizza-block__image">
@@ -20,7 +26,7 @@ export default function PizzaBlock({ title, img, price }) {
 			</div>
 			<div className="pizza-block__bottom">
 				<div className="pizza-block__price">від {price}грн</div>
-				<div className="button button--add">
+				<button onClick={onAddPizza} className="button button--add">
 					<svg
 						width="12"
 						height="12"
@@ -34,8 +40,10 @@ export default function PizzaBlock({ title, img, price }) {
 						/>
 					</svg>
 					<span>Додати</span>
-					<i style={{ display: "inline-block" }}>2</i>
-				</div>
+					{pizzaCount >= 1 && (
+						<i style={{ display: "inline-block" }}>{pizzaCount}</i>
+					)}
+				</button>
 			</div>
 		</div>
 	);
