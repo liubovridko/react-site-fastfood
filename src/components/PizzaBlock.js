@@ -1,7 +1,10 @@
 import React from "react";
 
-export default function PizzaBlock({ title, img, price }) {
+export default function PizzaBlock({ title, image, price, sizes, types }) {
+	const nameOfTypes = ["тонке", "традиційне"];
 	const [pizzaCount, setPizzaCount] = React.useState(0);
+	const [activeType, setActiveType] = React.useState(0);
+	const [activeSize, setActiveSize] = React.useState(0);
 	const onAddPizza = () => {
 		setPizzaCount(pizzaCount + 1);
 	};
@@ -9,19 +12,32 @@ export default function PizzaBlock({ title, img, price }) {
 		<div className="pizza-block">
 			<div className="pizza-block__image">
 				<picture>
-					<img src={img} />
+					<img src={image} />
 				</picture>
 			</div>
 			<h3 className="pizza-block__title">{title}</h3>
 			<div className="pizza-block__options">
 				<ul>
-					<li className="active">тонке</li>
-					<li>традиційне</li>
+					{types.map((typeId, key) => (
+						<li
+							onClick={() => setActiveType(typeId)}
+							key={key}
+							className={activeType == typeId ? "active" : ""}
+						>
+							{nameOfTypes[typeId]}
+						</li>
+					))}
 				</ul>
 				<ul>
-					<li>26 см</li>
-					<li className="active">30 см</li>
-					<li>40 см</li>
+					{sizes.map((size, i) => (
+						<li
+							onClick={() => setActiveSize(i)}
+							key={i}
+							className={activeSize == i ? "active" : ""}
+						>
+							{size} см
+						</li>
+					))}
 				</ul>
 			</div>
 			<div className="pizza-block__bottom">

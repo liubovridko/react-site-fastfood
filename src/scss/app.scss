@@ -93,14 +93,13 @@ body {
 					padding: 13px 30px;
 					margin-right: 10px;
 					font-weight: bold;
-
+					cursor: pointer;
 					transition: background-color 0.2s ease-in-out;
 					@include noselect();
 					&.active {
 						background-color: black;
-						a {
-							color: white;
-						}
+
+						color: white;
 					}
 					&:active {
 						background-color: darken(#f9f9f9, 5%);
