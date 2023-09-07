@@ -18,10 +18,10 @@ export default function PizzaBlock({ title, image, price, sizes, types }) {
 			<h3 className="pizza-block__title">{title}</h3>
 			<div className="pizza-block__options">
 				<ul>
-					{types.map((typeId, key) => (
+					{types.map((typeId) => (
 						<li
 							onClick={() => setActiveType(typeId)}
-							key={key}
+							key={typeId}
 							className={activeType == typeId ? "active" : ""}
 						>
 							{nameOfTypes[typeId]}

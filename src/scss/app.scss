@@ -153,15 +153,6 @@ body {
 				overflow: hidden;
 				padding: 10px 0;
 				width: 160px;
-				visibility: hidden;
-				opacity: 0.5;
-				transition:
-					visibility 0.3s ease-in-out,
-					opacity 0.3s ease-in-out;
-				&.show {
-					visibility: visible;
-					opacity: 1;
-				}
 
 				ul {
 					overflow: hidden;
