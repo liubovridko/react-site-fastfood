@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "prettier": "^3.0.2",
+    "react-content-loader": "^6.2.1",
     "sass": "^1.66.1"
   }
 }
