@@ -1,19 +1,23 @@
+import { Link } from "react-router-dom";
+
 export default function Header() {
 	return (
 		<header className="header">
 			<div className="container">
 				<div className="header__logo">
-					<picture>
-						<source srcSet="img/logo.webp" type="image/webp" />
-						<img src="img/logo.png" width="38" height="38" />
-					</picture>
+					<Link to="/">
+						<picture>
+							<source srcSet="img/logo.webp" type="image/webp" />
+							<img src="img/logo.png" width="38" height="38" />
+						</picture>
+					</Link>
 					<div>
 						<h1>REACT PIZZA</h1>
 						<p>найсмачніша піцца у всесвіті</p>
 					</div>
 				</div>
 				<div className="header__cart">
-					<a href="cart-empty.html" className="button button--cart">
+					<Link to="cart" className="button button--cart">
 						<span id="total">520 uan</span>
 						<div className="line-divided"></div>
 						<svg
@@ -47,7 +51,7 @@ export default function Header() {
 						</svg>
 
 						<span id="count">1</span>
-					</a>
+					</Link>
 				</div>
 			</div>
 		</header>

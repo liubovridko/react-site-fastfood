@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import logo from "./logo.svg";
 import "./scss/app.scss";
@@ -20,7 +15,11 @@ function App() {
       <Header />
 
       <main className="content">
-        <Home />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </main>
     </div>
   );
