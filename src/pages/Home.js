@@ -5,7 +5,7 @@ import PizzaBlock from "../components/PizzaBlock.js";
 import Skeleton from "../components/Skeleton.js";
 import Pagination from "../components/Pagination/";
 
-import AppContext from "../context.js";
+import SearchContext from "../context.js";
 
 export default function Home() {
 	const [items, setItems] = React.useState([]);
@@ -17,7 +17,7 @@ export default function Home() {
 	});
 	const [currentPage, setCurrentPage] = React.useState(1);
 
-	const { searchValue } = React.useContext(AppContext);
+	const { searchValue } = React.useContext(SearchContext);
 
 	React.useEffect(() => {
 		const category = categoryId > 0 ? `&category=${categoryId}` : "";

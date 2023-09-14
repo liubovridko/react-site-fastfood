@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import Search from "./Search/";
 
-export default function Header({ searchValue, setSearchValue }) {
+export default function Header() {
 	return (
 		<header className="header">
 			<div className="container">
@@ -18,10 +18,7 @@ export default function Header({ searchValue, setSearchValue }) {
 						<p>найсмачніша піцца у всесвіті</p>
 					</div>
 				</div>
-				<Search
-					searchValue={searchValue}
-					setSearchValue={setSearchValue}
-				/>
+				<Search />
 				<div className="header__cart">
 					<Link to="cart" className="button button--cart">
 						<span id="total">520 uan</span>

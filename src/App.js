@@ -9,14 +9,14 @@ import Home from "./pages/Home.js";
 import Cart from "./pages/Cart.js";
 import NotFound from "./pages/NotFound.js";
 
-import AppContext from "./context.js";
+import SearchContext from "./context.js";
 
 function App() {
   const [searchValue, setSearchValue] = React.useState("");
   return (
     <div className="wrapper">
-      <AppContext.Provider value={{ searchValue, setSearchValue }}>
-        <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+      <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+        <Header />
 
         <main className="content">
           <Routes>
@@ -25,7 +25,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
-      </AppContext.Provider>
+      </SearchContext.Provider>
     </div>
   );
 }
