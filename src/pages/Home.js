@@ -1,4 +1,8 @@
 import React from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setCategoryId } from "../redux/slices/filterSlice.js";
+
 import Categories from "../components/Categories.js";
 import Sort from "../components/Sort.js";
 import PizzaBlock from "../components/PizzaBlock.js";
@@ -8,21 +12,29 @@ import Pagination from "../components/Pagination/";
 import SearchContext from "../context.js";
 
 export default function Home() {
+	const { categoryId, sort } = useSelector((state) => state.filterReducer);
+
+	const dispatch = useDispatch();
+
 	const [items, setItems] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
-	const [categoryId, setCategoryId] = React.useState(0);
-	const [sortObj, setSortObj] = React.useState({
+	//const [categoryId, setCategoryId] = React.useState(0);
+
+	const onClickCategory = (id) => {
+		dispatch(setCategoryId(id));
+	};
+	/*const [sortObj, setSortObj] = React.useState({
 		name: "популярні",
 		sortProperty: "rating",
-	});
+	});*/
 	const [currentPage, setCurrentPage] = React.useState(1);
 
 	const { searchValue } = React.useContext(SearchContext);
 
 	React.useEffect(() => {
 		const category = categoryId > 0 ? `&category=${categoryId}` : "";
-		const sortBy = sortObj.sortProperty.replace("-", "");
-		const order = sortObj.sortProperty.includes("-") ? "asc" : "desc";
+		const sortBy = sort.sortProperty.replace("-", "");
+		const order = sort.sortProperty.includes("-") ? "asc" : "desc";
 		const search = searchValue ? `&search=${searchValue}` : "";
 		setIsLoading(true);
 		fetch(
@@ -36,15 +48,15 @@ export default function Home() {
 				setIsLoading(false);
 			});
 		window.scrollTo(0, 0);
-	}, [categoryId, sortObj, searchValue, currentPage]);
+	}, [categoryId, sort, searchValue, currentPage]);
 	return (
 		<div className="container">
 			<div className="block__filter">
 				<Categories
 					categoryId={categoryId}
-					onClickCategory={(index) => setCategoryId(index)}
+					onClickCategory={onClickCategory}
 				/>
-				<Sort value={sortObj} onChangeSort={(obj) => setSortObj(obj)} />
+				<Sort />
 			</div>
 			<h2 className="content__title">Усі піцци</h2>
 			<div className="content__items">
