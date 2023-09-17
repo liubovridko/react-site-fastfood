@@ -125,7 +125,10 @@ export default function Home() {
 								<PizzaBlock key={item.id} {...item} />
 							))}
 			</div>
-			<Pagination onChangePage={onChangePage} />
+			<Pagination
+				currrentPage={currentPage}
+				onChangePage={onChangePage}
+			/>
 		</div>
 	);
 }
