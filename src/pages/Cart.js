@@ -1,4 +1,23 @@
+import { useSelector, useDispatch } from "react-redux";
+import { addItem, clearItems } from "../redux/slices/cartSlice.js";
+import CartItem from "../components/CartItem.js";
+import CartEmpty from "./CartEmpty.js";
+
 export default function Cart() {
+	const { items, totalPrice } = useSelector((state) => state.cartReducer);
+	const totalCount = items.reduce((sum, obj) => {
+		return sum + obj.count;
+	}, 0);
+	const dispatch = useDispatch();
+	const onClickClear = () => {
+		if (window.confirm("Бажаєте очистити корзину ?")) {
+			dispatch(clearItems());
+		}
+	};
+
+	if (!totalPrice) {
+		return <CartEmpty />;
+	}
 	return (
 		<div className="container--cart">
 			<div className="cart">
@@ -35,7 +54,7 @@ export default function Cart() {
 						</svg>
 						Кошик
 					</h2>
-					<div className="cart__clear">
+					<div onClick={onClickClear} className="cart__clear">
 						<svg
 							width="20"
 							height="20"
@@ -76,101 +95,16 @@ export default function Cart() {
 					</div>
 				</div>
 				<div className="cart__items">
-					<div className="cart__item">
-						<div className="cart__item--info">
-							<picture>
-								<source
-									srcSet="img/pizza/1.webp"
-									type="image/webp"
-								/>
-								<img src="img/pizza/1.png" />
-							</picture>
-							<div className="cart__item--title">
-								<h3>Сирна фієрія</h3>
-								<span>Тонке тісто 23см</span>
-							</div>
-						</div>
-						<div className="cart__item--count">
-							<div className="button button--outline button--circle">
-								-
-							</div>
-							<b>2</b>
-							<div className="button button--outline button--circle">
-								+
-							</div>
-						</div>
-						<div className="cart__item--price">
-							<b>720 грн</b>
-						</div>
-						<div className="button button--grey button--circle">
-							<span>x</span>
-						</div>
-					</div>
-					<div className="cart__item">
-						<div className="cart__item--info">
-							<picture>
-								<source
-									srcSet="img/pizza/2.webp"
-									type="image/webp"
-								/>
-								<img src="img/pizza/2.png" />
-							</picture>
-							<div className="cart__item--title">
-								<h3>По азійські</h3>
-								<span>Товсте тісто, 40см</span>
-							</div>
-						</div>
-						<div className="cart__item--count">
-							<div className="button button--outline button--circle">
-								-
-							</div>
-							<b>1</b>
-							<div className="button button--outline button--circle">
-								+
-							</div>
-						</div>
-						<div className="cart__item--price">
-							<b>720 грн</b>
-						</div>
-						<div className="button button--grey button--circle">
-							<span>x</span>
-						</div>
-					</div>
-					<div className="cart__item">
-						<div className="cart__item--info">
-							<picture>
-								<source
-									srcSet="img/pizza/3.webp"
-									type="image/webp"
-								/>
-								<img src="img/pizza/3.png" />
-							</picture>
-							<div className="cart__item--title">
-								<h3>Чізбургер піцца</h3>
-								<span>Тонке тісто, 30см</span>
-							</div>
-						</div>
-						<div className="cart__item--count">
-							<div className="button button--outline button--circle">
-								-
-							</div>
-							<b>2</b>
-							<div className="button button--outline button--circle">
-								+
-							</div>
-						</div>
-						<div className="cart__item--price">
-							<b>720 грн</b>
-						</div>
-						<div className="button button--grey button--circle">
-							<span>x</span>
-						</div>
-					</div>
+					{items.map((item) => (
+						<CartItem key={item.id} {...item} />
+					))}
 				</div>
 				<div className="cart__total-info">
-					<div>Усього піцц:</div>
 					<div>
-						Сума замовлення: <span>990грн</span>
+						Усього піцц: <b>{totalCount}</b>
+					</div>
+					<div>
+						Сума замовлення: <span>{totalPrice}грн</span>
 					</div>
 				</div>
 				<div className="cart__buttons">
