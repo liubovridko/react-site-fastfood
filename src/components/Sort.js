@@ -15,13 +15,26 @@ export default function Sort() {
 	const sort = useSelector((state) => state.filterReducer.sort);
 	const dispatch = useDispatch();
 	const [open, setOpen] = React.useState(false);
+	const sortRef = React.useRef();
+
+	React.useEffect(() => {
+		//mount
+		const handleClickOutside = (event) => {
+			if (!event.composedPath().includes(sortRef.current)) setOpen(false);
+		};
+		document.body.addEventListener("click", handleClickOutside);
+		//unmount
+		return () => {
+			document.body.removeEventListener("click", handleClickOutside);
+		};
+	}, []);
 
 	const onClickSort = (obj) => {
 		dispatch(setSort(obj));
 		setOpen(false);
 	};
 	return (
-		<div className="sort">
+		<div ref={sortRef} className="sort">
 			<div className="sort__label" id="popular-sort">
 				<svg
 					width="10"
