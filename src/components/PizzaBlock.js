@@ -9,7 +9,7 @@ export default function PizzaBlock({ id, title, image, price, sizes, types }) {
 	const cartItem = useSelector((state) =>
 		state.cartReducer.items.find((obj) => obj.id == id),
 	);
-	console.log(cartItem);
+
 	const pizzaCount = cartItem ? cartItem.count : 0;
 
 	const [activeType, setActiveType] = React.useState(0);
@@ -21,7 +21,7 @@ export default function PizzaBlock({ id, title, image, price, sizes, types }) {
 			title,
 			image,
 			price,
-			size: activeSize,
+			size: sizes[activeSize],
 			type: nameOfTypes[activeType],
 		};
 
