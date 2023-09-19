@@ -1,12 +1,14 @@
 import React from "react";
 
+import axios from "axios";
+
 import { useSelector, useDispatch } from "react-redux";
 import {
 	setCategoryId,
 	setCurrentPage,
 	setFilters,
 } from "../redux/slices/filterSlice.js";
-
+import { setItems, fetchPizzas } from "../redux/slices/pizzaSlice.js";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +21,8 @@ import Pagination from "../components/Pagination/";
 import SearchContext from "../context.js";
 
 export default function Home() {
+	const { items, status } = useSelector((state) => state.pizza);
+
 	const { categoryId, sort, currentPage } = useSelector(
 		(state) => state.filterReducer,
 	);
@@ -28,8 +32,8 @@ export default function Home() {
 
 	const isSearch = React.useRef(false);
 	const isMounted = React.useRef(false);
-	const [items, setItems] = React.useState([]);
-	const [isLoading, setIsLoading] = React.useState(true);
+	//const [items, setItems] = React.useState([]);
+	//const [isLoading, setIsLoading] = React.useState(true);
 	//const [categoryId, setCategoryId] = React.useState(0);
 
 	const onClickCategory = React.useCallback((id) => {
@@ -69,28 +73,29 @@ export default function Home() {
 		}
 	}, []);
 
-	const fetchPizzas = () => {
+	const getPizzas = async () => {
 		const category = categoryId > 0 ? `&category=${categoryId}` : "";
 		const sortBy = sort.sortProperty.replace("-", "");
 		const order = sort.sortProperty.includes("-") ? "asc" : "desc";
 		const search = searchValue ? `&search=${searchValue}` : "";
-		setIsLoading(true);
-		fetch(
-			`https://64fb19d3cb9c00518f7aa530.mockapi.io/items?limit=4&page=${currentPage}${category}&sortBy=${sortBy}&order=${order}${search}`,
-		)
-			.then((res) => {
-				return res.json();
-			})
-			.then((json) => {
-				setItems(json);
-				setIsLoading(false);
-			});
+
+		try {
+			dispatch(
+				fetchPizzas({ category, sortBy, order, search, currentPage }),
+			);
+			/*const res = await axios.get(
+				`https://64fb19d3cb9c00518f7aa530.mockapi.io/items?limit=4&page=${currentPage}${category}&sortBy=${sortBy}&order=${order}${search}`,
+			);
+			dispatch(setItems(res.data));*/
+		} catch (error) {
+			console.log(error, "Reqiured error");
+		}
 	};
 	//if first render is done-make a request for pizza
 	React.useEffect(() => {
 		window.scrollTo(0, 0);
 		if (!isSearch.current) {
-			fetchPizzas();
+			getPizzas();
 		}
 		isSearch.current = false;
 	}, [categoryId, sort.sortProperty, searchValue, currentPage]);
@@ -105,26 +110,38 @@ export default function Home() {
 				<Sort />
 			</div>
 			<h2 className="content__title">Усі піцци</h2>
-			<div className="content__items">
-				{isLoading
-					? [...new Array(6)].map((_, index) => (
-							<Skeleton key={index} />
-					  ))
-					: items
-							.filter((obj) => {
-								if (
-									obj.title
-										.toLowerCase()
-										.includes(searchValue.toLowerCase())
-								) {
-									return true;
-								}
-								return false;
-							})
-							.map((item, key) => (
-								<PizzaBlock key={item.id} {...item} />
-							))}
-			</div>
+			{status == "error" ? (
+				<div className="content__error-info">
+					<h2>Помилка 😕</h2>
+					<p>
+						Нажаль, не вийшло отримати піцци.
+						<br />
+						Спробуйте повторити запит.
+					</p>
+				</div>
+			) : (
+				<div className="content__items">
+					{status == "loading"
+						? [...new Array(6)].map((_, index) => (
+								<Skeleton key={index} />
+						  ))
+						: items
+								.filter((obj) => {
+									if (
+										obj.title
+											.toLowerCase()
+											.includes(searchValue.toLowerCase())
+									) {
+										return true;
+									}
+									return false;
+								})
+								.map((item, key) => (
+									<PizzaBlock key={item.id} {...item} />
+								))}
+				</div>
+			)}
+
 			<Pagination
 				currrentPage={currentPage}
 				onChangePage={onChangePage}
