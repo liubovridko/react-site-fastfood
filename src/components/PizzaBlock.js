@@ -8,7 +8,7 @@ export default function PizzaBlock({ id, title, image, price, sizes, types }) {
 	const dispatch = useDispatch();
 	const cartItem = useSelector((state) =>
 		state.cartReducer.items.find((obj) => obj.id == id),
-	);
+	); //selectCartItemById(id)
 
 	const pizzaCount = cartItem ? cartItem.count : 0;
 

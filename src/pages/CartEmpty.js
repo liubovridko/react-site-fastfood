@@ -4,9 +4,7 @@ export default function CartEmpty() {
 	return (
 		<div className="container--cart">
 			<div className="cart cart--empty">
-				<h2>
-					Кошик порожній <icon>😕</icon>
-				</h2>
+				<h2>Кошик порожній 😕</h2>
 				<p>
 					Найімовірніше, ви не замовляли ще піцу.
 					<br />
