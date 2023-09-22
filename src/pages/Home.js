@@ -7,10 +7,16 @@ import {
 	setCategoryId,
 	setCurrentPage,
 	setFilters,
+	selectFilter,
 } from "../redux/slices/filterSlice.js";
-import { setItems, fetchPizzas } from "../redux/slices/pizzaSlice.js";
+import {
+	selectPizzaData,
+	setItems,
+	fetchPizzas,
+} from "../redux/slices/pizzaSlice.js";
+
 import qs from "qs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import Categories from "../components/Categories.js";
 import Sort, { sortList } from "../components/Sort.js";
@@ -18,14 +24,11 @@ import PizzaBlock from "../components/PizzaBlock.js";
 import Skeleton from "../components/Skeleton.js";
 import Pagination from "../components/Pagination/";
 
-import SearchContext from "../context.js";
-
 export default function Home() {
-	const { items, status } = useSelector((state) => state.pizza);
+	const { items, status } = useSelector(selectPizzaData);
 
-	const { categoryId, sort, currentPage } = useSelector(
-		(state) => state.filterReducer,
-	);
+	const { categoryId, sort, currentPage, searchValue } =
+		useSelector(selectFilter);
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -48,7 +51,6 @@ export default function Home() {
 		dispatch(setCurrentPage(page));
 	};
 
-	const { searchValue } = React.useContext(SearchContext);
 	//if params was changed and first render is done
 	React.useEffect(() => {
 		if (isMounted.current) {
@@ -137,7 +139,13 @@ export default function Home() {
 									return false;
 								})
 								.map((item, key) => (
-									<PizzaBlock key={item.id} {...item} />
+									<Link
+										key={item.id}
+										to={`/pizza/${item.id}`}
+									>
+										{" "}
+										<PizzaBlock {...item} />
+									</Link>
 								))}
 				</div>
 			)}
