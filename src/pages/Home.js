@@ -16,7 +16,7 @@ import {
 } from "../redux/slices/pizzaSlice.js";
 
 import qs from "qs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import Categories from "../components/Categories.js";
 import Sort, { sortList } from "../components/Sort.js";
@@ -139,7 +139,13 @@ export default function Home() {
 									return false;
 								})
 								.map((item, key) => (
-									<PizzaBlock key={item.id} {...item} />
+									<Link
+										key={item.id}
+										to={`/pizza/${item.id}`}
+									>
+										{" "}
+										<PizzaBlock {...item} />
+									</Link>
 								))}
 				</div>
 			)}
