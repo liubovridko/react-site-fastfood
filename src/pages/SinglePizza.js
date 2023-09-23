@@ -1,10 +1,11 @@
 import React from "react";
-import { useHistory, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 
 export default function SinglePizza() {
 	const [pizza, setPizza] = React.useState();
 	const { id } = useParams();
+	const navigate = useNavigate();
 	React.useEffect(() => {
 		async function fetchPizza() {
 			try {
@@ -14,6 +15,7 @@ export default function SinglePizza() {
 				setPizza(data);
 			} catch (error) {
 				console.log(error);
+				navigate("/");
 			}
 		}
 		fetchPizza();
